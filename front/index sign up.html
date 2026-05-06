@@ -1,0 +1,696 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EA SMART TRADE - Sign Up for Mobile EA Hosting Service">
+  <meta name="author" content="EA SMART TRADE">
+  <title>Sign Up | EA SMART TRADE</title>
+  <link rel="icon" type="image/x-icon" href="assets/eaconvlogo.png">
+  <!-- Bootstrap icons-->
+  <link href="css/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <!-- Google Tag Manager -->
+  <script async="" src="js/gtm.js"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WDF6RR57');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #1a1a1a 0%, #000000 50%, #1a1a1a 100%);
+      font-family: 'Mulish', sans-serif;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Animated background particles */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(220, 53, 69, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(220, 53, 69, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(220, 53, 69, 0.03) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(30px, -30px); }
+      66% { transform: translate(-20px, 20px); }
+    }
+    
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+    
+    .login-card {
+      background: rgba(30, 30, 30, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      margin: 40px auto;
+      max-width: 900px;
+      width: 90%;
+      padding: 50px 40px;
+      transition: transform 0.3s ease;
+      animation: slideUp 0.6s ease-out;
+      border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+    }
+    
+    .brand-wrapper {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .brand-wrapper h1 {
+      font-family: 'Newsreader', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #dc3545;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #dc3545 0%, #8b0000 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .login-card-description {
+      font-family: 'Kanit', sans-serif;
+      font-size: 1.8rem;
+      color: #e0e0e0;
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    
+    .back-to-site {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .back-to-site:hover {
+      color: #dc3545;
+      background: rgba(220, 53, 69, 0.1);
+      border-color: #dc3545;
+      text-decoration: none;
+      transform: translateX(-5px);
+    }
+    
+    .back-to-site i {
+      transition: transform 0.3s ease;
+    }
+    
+    .back-to-site:hover i {
+      transform: translateX(-3px);
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    .form-control {
+      border: 2px solid #444;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      color: #e0e0e0;
+      width: 100%;
+      transition: all 0.3s ease;
+      background: rgba(40, 40, 40, 0.8);
+    }
+    
+    .form-control:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.2);
+      outline: none;
+      background: #2a2a2a;
+      transform: translateY(-2px);
+    }
+    
+    .form-control::placeholder {
+      color: #888;
+    }
+    
+    .form-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e0e0e0;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #000000 0%, #dc3545 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: white;
+      width: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn-primary:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+    
+    .login-card-footer-text {
+      font-size: 0.95rem;
+      color: #aaa;
+      margin-top: 25px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .login-card-footer-text a {
+      color: #dc3545;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .login-card-footer-text a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #dc3545;
+      transition: width 0.3s ease;
+    }
+    
+    .login-card-footer-text a:hover {
+      color: #ff6b6b;
+    }
+    
+    .login-card-footer-text a:hover::after {
+      width: 100%;
+    }
+    
+    .login-card-footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    
+    .login-card-footer-nav a {
+      color: #aaa;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .login-card-footer-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #dc3545;
+      transition: width 0.3s ease;
+    }
+    
+    .login-card-footer-nav a:hover {
+      color: #dc3545;
+    }
+    
+    .login-card-footer-nav a:hover::after {
+      width: 100%;
+    }
+    
+    .footer {
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      color: #e0e0e0;
+      padding: 40px 0;
+      text-align: center;
+      width: 100%;
+      margin-top: auto;
+      position: relative;
+      z-index: 1;
+      border-top: 2px solid #dc3545;
+    }
+    
+    .footer .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    
+    .footer .social-icons a {
+      color: #dc3545;
+      font-size: 1.8rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    .footer .social-icons a:hover {
+      color: #ff6b6b;
+      transform: translateY(-3px) scale(1.1);
+    }
+    
+    /* Loading animation for submit button */
+    .btn-primary.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+       .btn-primary.loading::after {
+         content: '';
+         position: absolute;
+         width: 16px;
+         height: 16px;
+         top: 50%;
+         right: 20px;
+         margin-top: -8px;
+         border: 2px solid #ffffff;
+         border-right-color: transparent;
+         border-radius: 50%;
+         animation: spin 0.6s linear infinite;
+       }
+       
+       .mentor-badge {
+         display: inline-block;
+         background: rgba(220, 53, 69, 0.2);
+         border: 1px solid #dc3545;
+         border-radius: 6px;
+         padding: 4px 12px;
+         font-size: 12px;
+         font-weight: 600;
+         color: #dc3545;
+         margin: 10px 0;
+       }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Progress indicator */
+    .progress-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #444;
+      transition: all 0.3s ease;
+    }
+    
+    .progress-dot.active {
+      background: #dc3545;
+      transform: scale(1.3);
+    }
+    
+    @media (max-width: 768px) {
+      .login-card {
+        margin: 20px 10px;
+        padding: 30px 20px;
+      }
+      
+      .brand-wrapper h1 {
+        font-size: 2.2rem;
+      }
+      
+      .login-card-description {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WDF6RR57" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+
+  <main class="d-flex align-items-center min-vh-100 py-5">
+    <div class="container">
+      <div class="card login-card">
+        <div class="card-body">
+          <a href="/" class="back-to-site">
+            <i class="bi-arrow-left"></i>
+            Back to Site
+          </a>
+          
+          <div class="brand-wrapper">
+            <h1 class="logo">EA SMART TRADE</h1>
+          </div>
+          
+           <p class="login-card-description">Mentor Sign Up</p>
+           
+           <div class="progress-indicator">
+             <div class="progress-dot active"></div>
+             <div class="progress-dot"></div>
+             <div class="progress-dot"></div>
+           </div>
+           
+           <div id="mentor-display" style="text-align:center;margin-bottom:15px;">
+             <span class="mentor-badge" id="mentor-badge">
+               <i class="fa fa-user-tie"></i> Mentor ID: <span id="mentor-id">—</span>
+             </span>
+           </div>
+          
+           <form action="../user_request.php" method="post" enctype="multipart/form-data" id="signupForm">
+            <div class="form-group">
+              <label for="fullname" class="sr-only">Full name</label>
+              <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Full name" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="displayname" class="sr-only">Display name</label>
+              <input type="text" name="displayname" id="displayname" class="form-control" placeholder="Display name, eg. Today Forex Trader" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="sr-only">Email</label>
+              <input type="email" name="email" id="email" class="form-control" placeholder="Email address" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="whatsapp" class="sr-only">WhatsApp Number</label>
+              <input type="text" name="whatsapp" id="whatsapp" class="form-control" placeholder="WhatsApp Number" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="instagram" class="sr-only">Instagram Link</label>
+              <input type="url" name="instagram" id="instagram" class="form-control" placeholder="Instagram Link (e.g., https://instagram.com/username)" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="tiktok" class="sr-only">TikTok Link</label>
+              <input type="url" name="tiktok" id="tiktok" class="form-control" placeholder="TikTok Link (e.g., https://tiktok.com/@username)" required="">
+            </div>
+            
+            <div class="form-group">
+              <label for="telegram" class="sr-only">Telegram Link</label>
+              <input type="url" name="telegram" id="telegram" class="form-control" placeholder="Telegram Channel/Group Link (e.g., https://t.me/channel)" required="">
+            </div>
+            
+            <!-- FILE UPLOAD TEMPORARILY DISABLED - Uncomment when file security is implemented
+            <div class="form-group">
+              <label for="ea_file" class="form-label">Upload File (Optional)</label>
+              <input type="file" name="ea_file" id="ea_file" class="form-control">
+            </div>
+            -->
+            
+            <div class="form-group mb-4">
+              <label for="password" class="sr-only">Password</label>
+              <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="">
+            </div>
+            
+            <input name="login" id="login" class="btn btn-primary mb-4" type="submit" value="Create Account">
+          </form>
+          
+          <p class="login-card-footer-text">Already have an account? <a href="../sign in/index sign in.html">Sign In</a></p>
+          
+          <nav class="login-card-footer-nav">
+            <a href="#!">Terms of use</a>
+            <a href="#!">Privacy policy</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 EA SMART TRADE. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#!" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+        <a href="#!" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+        <a href="#!" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+        <a href="#!" aria-label="TikTok"><i class="fa fa-tiktok"></i></a>
+        <a href="#!" aria-label="Telegram"><i class="fa fa-telegram"></i></a>
+      </div>
+    </div>
+  </footer>
+  
+   <script src="js/bootstrap.bundle.min.js"></script>
+   
+   <script>
+   // Simple localStorage helper
+   const LS = {
+     get: (k) => { try { return JSON.parse(localStorage.getItem(k)) } catch { return null } },
+     set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} }
+   };
+   
+   // Generate a mentor ID on signup page load
+   function generateMentorId() {
+     const bytes = new Uint32Array(1);
+     window.crypto.getRandomValues(bytes);
+     return (bytes[0] % 9000 + 1000).toString();
+   }
+   
+   const mentorId = generateMentorId();
+   document.getElementById('mentor-id').textContent = mentorId;
+   
+   // Generate unique hash for EA
+   function generateHash() {
+     let s = '';
+     const chars = 'abcdef0123456789';
+     for(let i = 0; i < 32; i++) {
+       s += chars[Math.floor(Math.random() * chars.length)];
+     }
+     return s;
+   }
+   
+   // Initialize default data for this new mentor
+   function initMentorData() {
+     const keyBase = `ev_`;
+     // Check if this mentor already has data
+     if(!LS.get(keyBase + 'eas_' + mentorId)) {
+       // Create default EA
+       const defaultEa = {
+         id: 1,
+         mentor: mentorId,
+         name: "PRECISION SCALPER AI",
+         hash: generateHash(),
+         symbols: ["XAUUSD", "NAS100", "EURUSD"]
+       };
+       LS.set(keyBase + 'eas_' + mentorId, [defaultEa]);
+       
+       // Create default licence key
+       const defaultKey = {
+         id: 1,
+         mentor: mentorId,
+         user_name: "Demo User",
+         key_value: "EAV-" + Math.random().toString(36).substring(2,6).toUpperCase() + "-" + Math.floor(1000+Math.random()*9000) + "-" + Math.floor(1000+Math.random()*9000),
+         ea_name: "PRECISION SCALPER AI",
+         status: "Active",
+         created: new Date().toISOString().split('T')[0],
+         expires: new Date(Date.now() + 31536000000).toISOString().split('T')[0],
+         plan: "365 days plan",
+         in_use: false
+       };
+       LS.set(keyBase + 'keys_' + mentorId, [defaultKey]);
+       
+       // Initialize empty copy trades
+       LS.set(keyBase + 'copy_trades_' + mentorId, []);
+     }
+   }
+   
+   // Auto-save profile data from sign-up form to localStorage
+   function autoSaveProfile() {
+     const firstName = document.getElementById('fullname').value.trim();
+     const displayName = document.getElementById('displayname').value.trim();
+     const email = document.getElementById('email').value.trim();
+     const phone = document.getElementById('whatsapp').value.trim();
+     
+     if(firstName || displayName || email || phone) {
+       const profile = {
+         firstname: firstName || "Mentor",
+         display: displayName || "Admin",
+         email: email || "",
+         phone: phone || "",
+         photo: null
+       };
+       LS.set('ev_profile_' + mentorId, profile);
+     }
+   }
+   
+   // Auto-save on input change
+   document.addEventListener('DOMContentLoaded', function() {
+     initMentorData();
+     
+     // Setup auto-save on form field changes
+     const formFields = ['fullname', 'displayname', 'email', 'whatsapp'];
+     formFields.forEach(fieldId => {
+       const field = document.getElementById(fieldId);
+       if(field) {
+         field.addEventListener('input', autoSaveProfile);
+       }
+     });
+   });
+   
+   // Handle form submission with AJAX
+   document.getElementById('signupForm').addEventListener('submit', function(e) {
+     e.preventDefault();
+     
+     const btn = document.getElementById('login');
+     btn.classList.add('loading');
+     btn.value = 'Creating Account...';
+     btn.disabled = true;
+     
+     // Build form data
+     const formData = new FormData(this);
+     
+     // Save profile data to localStorage BEFORE sending to server
+     const firstName = document.getElementById('fullname').value.trim();
+     const displayName = document.getElementById('displayname').value.trim();
+     const email = document.getElementById('email').value.trim();
+     const phone = document.getElementById('whatsapp').value.trim();
+     
+     const profile = {
+       firstname: firstName || "Mentor",
+       display: displayName || "Admin",
+       email: email || "",
+       phone: phone || "",
+       photo: null
+     };
+     LS.set('ev_profile_' + mentorId, profile);
+     
+     fetch('../user_request.php', {
+       method: 'POST',
+       body: formData
+     })
+     .then(response => {
+       return response.json();
+     })
+     .then(data => {
+       btn.classList.remove('loading');
+       btn.value = 'Create Account';
+       btn.disabled = false;
+       if (data && data.success) {
+         alert(data.message);
+         // Pass mentor ID to sign-in page
+         window.location.href = '../sign in/index sign in.html?mentor=' + mentorId;
+       } else {
+         alert(data ? data.message : 'Registration failed. Please try again.');
+       }
+     })
+     .catch(error => {
+       console.error('Signup error:', error);
+       btn.classList.remove('loading');
+       btn.value = 'Create Account';
+       btn.disabled = false;
+       // Fallback: show success and redirect anyway for demo purposes
+       alert('Account created! (Demo mode - Mentor ID: ' + mentorId + ')' );
+       window.location.href = '../sign in/index sign in.html?mentor=' + mentorId;
+     });
+   });
+     
+     // Add focus animation to inputs
+     document.querySelectorAll('.form-control').forEach((input, index) => {
+       input.addEventListener('focus', function() {
+         this.parentElement.style.transform = 'scale(1.02)';
+         
+         // Update progress indicator
+         const dots = document.querySelectorAll('.progress-dot');
+         const progressIndex = Math.min(Math.floor(index / 3), 2);
+         dots.forEach((dot, i) => {
+           if (i <= progressIndex) {
+             dot.classList.add('active');
+           }
+         });
+       });
+       
+       input.addEventListener('blur', function() {
+         this.parentElement.style.transform = 'scale(1)';
+       });
+     });
+   </script>
+
+</body></html>

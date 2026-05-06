@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple=e-mobile-web-app-title" content="EA SMART TRADE"/>
+<title>EA SMART TRADE</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;background:#000}
+button{font-family:'DM Sans',sans-serif;cursor:pointer;border:none;background:none}
+input,select{font-family:'DM Sans',sans-serif;-webkit-appearance:none;appearance:none}
+
+#screen-app{display:flex;flex-direction:column;min-height:100vh;background:#f0f4f8}
+
+/* TOPBAR */
+#topbar{height:56px;background:#000;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid #333;position:sticky;top:0;z-index:200;flex-shrink:0}
+.hbtn{width:38px;height:38px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bar{display:block;width:20px;height:2px;background:#555;border-radius:2px;position:relative}
+.bar::before,.bar::after{content:'';display:block;width:20px;height:2px;background:#555;border-radius:2px;position:absolute}
+.bar::before{top:-6px}.bar::after{top:6px}
+.tb-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#1e293b;letter-spacing:2px;position:absolute;left:50%;transform:translateX(-50%)}
+.tb-brand span{color:#ef4444}
+.av-wrap{position:relative;flex-shrink:0}
+.av-btn{width:40px;height:40px;border-radius:50%;overflow:hidden;background:#1a1a2e;border:2.5px solid #2d2d4e;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;position:relative}
+.av-btn:hover{transform:scale(1.07)}
+.av-btn svg{width:20px;height:20px;fill:#e2e8f0;flex-shrink:0}
+.av-photo{width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0;display:none}
+.av-drop{position:absolute;top:48px;right:0;background:#fff;border:1px solid #dde3ea;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.13);min-width:160px;z-index:300;overflow:hidden;display:none}
+.av-drop.open{display:block;animation:fd .14s ease}
+@keyframes fd{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.dd-item{display:flex;align-items:center;gap:9px;padding:12px 15px;font-size:13.5px;color:#475569;cursor:pointer;transition:background .12s}
+.dd-item:hover{background:#f1f5f9;color:#1e293b}
+
+#layout{display:flex;flex:1;overflow:hidden;height:calc(100vh - 56px)}
+
+#sidebar{width:210px;background:#000;border-right:1px solid #333;display:flex;flex-direction:column;padding:16px 0;flex-shrink:0;overflow-y:auto;transition:transform .25s}
+.nav-btn{display:flex;align-items:center;gap:12px;padding:12px 22px;font-size:13.5px;font-weight:500;color:#aaa;cursor:pointer;width:100%;text-align:left;border:none;background:none;transition:all .15s}
+.nav-btn svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.9}
+.nav-btn:hover{color:#ef4444;background:rgba(239,68,68,.1)}
+.nav-btn.active{background:#ef4444;color:#fff;font-weight:700}
+.nav-btn.active svg{stroke:#fff}
+.nav-spacer{flex:1}
+
+#main-area{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.alert-bar{background:#fff;border-bottom:1px solid #dde3ea;padding:12px 22px;font-size:13px;color:#334155;flex-shrink:0}
+.alert-bar b{color:#ef4444}
+#content{flex:1;padding:22px 18px;overflow-y:auto}
+
+.page{display:none;animation:si .2s ease}
+.page.active{display:block}
+@keyframes si{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* DASHBOARD */
+.date-pill{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #dde3ea;border-radius:20px;padding:6px 16px;font-size:12.5px;color:#475569;margin-bottom:22px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:560px}
+.stat-card{border-radius:15px;padding:22px 20px;min-height:130px}
+.stat-card.c-blue{background:#3b82f6;color:#fff}
+.stat-card.c-white{background:#fff;border:1px solid #dde3ea}
+.stat-card.c-dark{background:#1e293b;color:#fff}
+.stat-card.c-pink{background:#e05a7a;color:#fff}
+.sc-lbl{font-size:12px;font-weight:500;margin-bottom:10px;opacity:.88}
+.stat-card.c-white .sc-lbl{color:#64748b;opacity:1}
+.sc-val{font-size:44px;font-weight:800;line-height:1;font-family:'DM Mono',monospace}
+.stat-card.c-white .sc-val{color:#1e293b}
+.sc-desc{font-size:11.5px;margin-top:7px;opacity:.72}
+.stat-card.c-white .sc-desc{color:#94a3b8;opacity:1}
+
+/* FORM */
+.form-card{background:#fff;border:1px solid #dde3ea;border-radius:14px;padding:24px;max-width:480px}
+.fc-title{font-size:17px;font-weight:800;color:#1e293b;margin-bottom:3px;font-family:'Syne',sans-serif}
+.fc-sub{font-size:12.5px;color:#94a3b8;margin-bottom:20px}
+.fi{width:100%;padding:11px 13px;border:1.5px solid #dde3ea;border-radius:9px;font-size:14px;outline:none;transition:border .18s;background:#fff;color:#1e293b;margin-bottom:10px;display:block}
+.fi:focus{border-color:#ef4444}
+.fi::placeholder{color:#b2bcc8}
+.ck-row{display:flex;align-items:center;gap:7px;font-size:13px;color:#475569;margin-bottom:18px;cursor:pointer}
+.ck-row input[type=checkbox]{width:15px;height:15px;accent-color:#ef4444;flex-shrink:0}
+.blue-btn{background:#ef4444;color:#fff;border:none;border-radius:9px;padding:11px 28px;font-size:14px;font-weight:700;transition:all .18s}
+.blue-btn:hover:not(:disabled){background:#1d4ed8;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.blue-btn:disabled{background:#94a3b8;cursor:not-allowed}
+
+/* RESULT */
+.result-card{background:#fff;border:1px solid #dde3ea;border-radius:14px;padding:26px;max-width:540px}
+.rc-meta{font-size:10.5px;color:#94a3b8;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.rc-key{font-size:26px;font-weight:800;color:#ef4444;letter-spacing:2px;margin-bottom:12px;font-family:'DM Mono',monospace;word-break:break-all;line-height:1.3}
+.badge-row{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.badge{padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.bg-green{background:#22c55e;color:#fff}
+.bg-gray{background:#e2e8f0;color:#64748b}
+.bg-red{background:#ef4444;color:#fff}
+.rc-ea{color:#ef4444;font-weight:700;font-size:14px;margin-bottom:3px}
+.rc-note{font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.6}
+.rc-user{color:#22c55e;font-weight:700;font-size:14px;margin-bottom:7px}
+.rc-info{font-size:12.5px;color:#475569;line-height:2}
+.red-btn{background:#ef4444;color:#fff;border:none;border-radius:9px;padding:9px 22px;font-size:13px;font-weight:700;margin-top:16px;cursor:pointer;transition:all .18s}
+.red-btn:hover{background:#dc2626;transform:translateY(-1px)}
+.back-btn{display:inline-flex;align-items:center;gap:5px;background:#ef4444;color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:13px;font-weight:600;margin-top:13px;cursor:pointer;transition:all .18s}
+.back-btn:hover{background:#1d4ed8}
+
+/* MANAGE EAs */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:820px}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+.mc{background:#fff;border:1px solid #dde3ea;border-radius:14px;padding:22px}
+.mc-title{font-size:16px;font-weight:800;color:#1e293b;margin-bottom:3px;font-family:'Syne',sans-serif}
+.mc-sub{font-size:12px;color:#94a3b8;margin-bottom:14px}
+.fl{display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px}
+.btn-row{display:flex;gap:9px;margin-top:6px;flex-wrap:wrap}
+.add-btn{background:#ef4444;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.add-btn:hover:not(:disabled){background:#1d4ed8}
+.add-btn:disabled{background:#94a3b8;cursor:not-allowed}
+.cancel-btn{background:transparent;color:#64748b;border:1.5px solid #dde3ea;border-radius:8px;padding:9px 18px;font-size:13px;cursor:pointer}
+.ea-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.ea-tbl th{text-align:left;padding:7px 0;color:#94a3b8;font-weight:600;border-bottom:2px solid #dde3ea;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.ea-tbl td{padding:10px 0;border-bottom:1px solid #f1f5f9}
+.ea-tbl td:last-child{text-align:right;font-weight:700}
+
+/* EA DETAIL */
+.ea-card{background:#fff;border:1px solid #dde3ea;border-radius:14px;padding:26px;max-width:780px}
+.ea-meta{font-size:12px;color:#94a3b8;margin-bottom:8px}
+.ea-hash{font-size:20px;font-weight:800;color:#ef4444;word-break:break-all;line-height:1.4;margin-bottom:14px;font-family:'DM Mono',monospace}
+.ea-name{color:#ef4444;font-weight:800;font-size:15px;text-transform:uppercase;margin-bottom:5px;font-family:'Syne',sans-serif}
+.ea-desc{font-size:12.5px;color:#64748b;margin-bottom:16px;line-height:1.6}
+.dl-link{color:#ef4444;font-weight:600;font-size:13px;cursor:pointer}
+.host-txt{font-size:12.5px;color:#1e293b;margin-bottom:22px;display:block;margin-top:3px}
+.sym-section{border-top:1px solid #dde3ea;padding-top:20px;margin-top:20px}
+.sym-title{font-size:14px;font-weight:700;color:#1e293b;margin-bottom:3px}
+.sym-sub{font-size:12px;color:#94a3b8;margin-bottom:12px}
+.sym-row{display:flex;gap:8px;margin-bottom:12px}
+.sym-input{flex:1;padding:10px 13px;border:1.5px solid #dde3ea;border-radius:9px;font-size:14px;outline:none;transition:border .18s;background:#fff;color:#1e293b;text-transform:uppercase}
+.sym-input:focus{border-color:#ef4444}
+.sym-input::placeholder{color:#b2bcc8;text-transform:none}
+.sym-add{background:#ef4444;color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.sym-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;min-height:10px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1.5px solid #bfdbfe;color:#ef4444;border-radius:20px;padding:4px 12px 4px 13px;font-size:12.5px;font-weight:700;font-family:'DM Mono',monospace}
+.chip button{background:none;border:none;color:#93c5fd;cursor:pointer;font-size:14px;line-height:1;padding:0}
+.chip button:hover{color:#ef4444}
+.green-btn{background:#22c55e;color:#fff;border:none;border-radius:9px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.green-btn:hover{background:#16a34a;transform:translateY(-1px)}
+.ea-del-btn{background:#ef4444;color:#fff;border:none;border-radius:20px;padding:9px 26px;font-size:13px;font-weight:700;cursor:pointer;margin-top:22px}
+.ea-del-btn:hover{background:#dc2626}
+
+/* KEY STATS */
+.stats-card{background:#fff;border:1px solid #dde3ea;border-radius:14px;padding:22px;max-width:960px;overflow-x:auto}
+.st-title{font-size:17px;font-weight:800;color:#1e293b;margin-bottom:3px;font-family:'Syne',sans-serif}
+.st-sub{font-size:12px;color:#94a3b8;margin-bottom:16px}
+.keys-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:500px}
+.keys-tbl th{text-align:left;padding:8px 9px;color:#94a3b8;font-weight:600;border-bottom:2px solid #dde3ea;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.keys-tbl td{padding:11px 9px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.keys-tbl tr:hover td{background:#f8faff}
+.k-link{color:#ef4444;cursor:pointer;font-weight:500;font-family:'DM Mono',monospace;font-size:11.5px}
+.k-link:hover{text-decoration:underline}
+.del-btn{background:#ef4444;color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.del-btn:hover{background:#dc2626}
+
+/* PROFILE */
+.profile-outer{padding:10px 0 50px}
+.profile-card{background:#fff;border-radius:16px;padding:28px 22px;max-width:480px;margin:0 auto;box-shadow:0 2px 16px rgba(0,0,0,.07)}
+.photo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
+.photo-circle{width:100px;height:100px;border-radius:50%;background:#e2e8f0;border:3px solid #dde3ea;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;cursor:pointer;position:relative;flex-shrink:0;margin-bottom:10px;transition:opacity .2s}
+.photo-circle::after{content:'📷 Change';position:absolute;inset:0;background:rgba(0,0,0,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;opacity:0;transition:opacity .2s}
+.photo-circle:hover::after{opacity:1}
+.photo-circle img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;position:absolute;inset:0}
+.photo-hint{font-size:12px;color:#94a3b8}
+.upload-btn{width:100%;padding:13px;background:#5b4fcf;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:22px;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:7px}
+.upload-btn:hover{background:#4338ca;transform:translateY(-1px)}
+.upload-btn.busy{opacity:.65;pointer-events:none}
+.prof-label{display:block;font-size:12.5px;font-weight:600;color:#1e293b;margin-bottom:5px}
+.prof-input{width:100%;padding:12px 13px;border:1.5px solid #dde3ea;border-radius:10px;font-size:14px;outline:none;transition:border .18s;background:#fff;color:#1e293b;margin-bottom:16px;display:block}
+.prof-input:focus{border-color:#5b4fcf}
+.prof-input[readonly]{background:#f1f5f9;color:#64748b;cursor:not-allowed}
+.save-prof-btn{width:100%;padding:13px;background:#5b4fcf;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s}
+.save-prof-btn:hover{background:#4338ca;transform:translateY(-1px)}
+.prof-copy{text-align:center;font-size:11.5px;color:#94a3b8;margin-top:22px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:11px 24px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.25);animation:tin .22s ease}
+@keyframes tin{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+#sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}
+#sidebar-overlay.show{display:block}
+
+@media(max-width:700px){
+  #sidebar{position:fixed;top:56px;left:0;bottom:0;z-index:160;transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  .dash-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .sc-val{font-size:36px}
+   .keys-tbl th:nth-child(3),.keys-tbl td:nth-child(3),
+   .keys-tbl th:nth-child(5),.keys-tbl td:nth-child(5){display:none}
+ }
+
+ /* COPY TRADE - AGGRESSIVE DARK STYLE */
+ #copy-trade-panel{max-width:1100px;margin:0 auto;padding-bottom:40px}
+ .ct-card{background:#0f0f1a;border:1px solid #2a2a3e;border-radius:16px;padding:26px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03)}
+ .ct-aggro{position:relative;overflow:hidden}
+ .ct-aggro::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ef4444 0%,#dc2626 50%,#ef4444 100%);box-shadow:0 0 20px rgba(239,68,68,.5)}
+ .ct-header{margin-bottom:26px;position:relative}
+ .ct-title-row{display:flex;align-items:center;gap:11px;margin-bottom:7px}
+ .ct-emoji{font-size:22px;filter:drop-shadow(0 0 8px rgba(239,68,68,.6))}
+ .ct-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;color:#ef4444;letter-spacing:1px;text-shadow:0 0 10px rgba(239,68,68,.5)}
+ .ct-sub{font-size:12.5px;color:#94a3b8;letter-spacing:0.3px}
+ .ct-row{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start;margin-bottom:20px}
+ .ct-label{font-size:12px;font-weight:700;color:#ef4444;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:block;text-shadow:0 0 5px rgba(239,68,68,.4)}
+ .ct-select{width:100%;padding:14px 16px;background:#1a1a2e;border:1.5px solid #3a3a5e;border-radius:10px;color:#e2e8f0;font-size:15px;font-weight:600;outline:none;transition:all .2s;text-transform:uppercase}
+ .ct-select:focus{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15)}
+ .ct-select option{background:#1a1a2e;color:#e2e8f0}
+ .ct-dir-row{display:flex;gap:10px}
+ .ct-dir-btn{flex:1;padding:16px;border:2px solid;border-radius:11px;font-size:16px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+ .ct-dir-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+ .ct-buy{border-color:#22c55e;color:#22c55e;background:rgba(34,197,94,.08)}
+ .ct-buy:hover{background:rgba(34,197,94,.18);box-shadow:0 0 25px rgba(34,197,94,.45)}
+ .ct-buy.active{border-color:#22c55e;color:#000;background:#22c55e;box-shadow:0 0 30px rgba(34,197,94,.65)}
+ .ct-sell{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,.08)}
+ .ct-sell:hover{background:rgba(239,68,68,.18);box-shadow:0 0 25px rgba(239,68,68,.45)}
+ .ct-sell.active{border-color:#ef4444;color:#fff;background:#ef4444;box-shadow:0 0 30px rgba(239,68,68,.65)}
+ .ct-three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+ .ct-col{display:flex;flex-direction:column}
+ .ct-input{padding:14px 16px;background:#1a1a2e;border:1.5px solid #3a3a5e;border-radius:10px;color:#e2e8f0;font-size:15px;font-weight:600;outline:none;transition:all .2s;text-align:center}
+ .ct-input:focus{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15)}
+ .ct-input::placeholder{color:#64748b;font-weight:400}
+ .ct-send-btn{width:100%;padding:17px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border:none;border-radius:11px;color:#fff;font-size:17px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 15px rgba(239,68,68,.4)}
+ .ct-send-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(239,68,68,.6)}
+ .ct-send-btn:active{transform:translateY(0)}
+ .ct-card-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ef4444;margin-bottom:18px;display:flex;align-items:center;gap:9px;letter-spacing:0.5px}
+ .ct-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;box-shadow:0 0 10px #22c55e;animation:pulse 2s infinite}
+ @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+ .ct-history-icon{font-size:18px}
+ .ct-table-wrap{overflow-x:auto}
+ .ct-table{width:100%;border-collapse:collapse;font-size:13px}
+ .ct-table th{text-align:left;padding:12px 10px;color:#94a3b8;font-weight:700;border-bottom:2px solid #2a2a3e;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;white-space:nowrap}
+ .ct-table td{padding:13px 10px;border-bottom:1px solid #1a1a2e;vertical-align:middle}
+ .ct-table tr:hover td{background:#1a1a2e}
+ .ct-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+ .ct-buy-badge{background:rgba(34,197,94,.2);color:#22c55e;border:1px solid #22c55e}
+ .ct-sell-badge{background:rgba(239,68,68,.2);color:#ef4444;border:1px solid #ef4444}
+ .ct-pending{background:rgba(251,191,36,.2);color:#fbbf24;border:1px solid #fbbf24}
+ .ct-filled{background:rgba(34,197,94,.2);color:#22c55e;border:1px solid #22c55e}
+ .ct-stopped{background:rgba(239,68,68,.2);color:#ef4444;border:1px solid #ef4444}
+ .ct-time{color:#94a3b8;font-size:11.5px;white-space:nowrap}
+ .empty-row td{text-align:center;color:#64748b;padding:30px;font-size:13px}
+
+ @media(max-width:700px){
+   .ct-row{grid-template-columns:1fr}
+   .ct-three-col{grid-template-columns:1fr}
+ }
+ </style>
+</head>
+<body>
+
+<div id="screen-app">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <button class="hbtn" onclick="toggleSidebar()"><span class="bar"></span></button>
+    <div class="tb-brand">EA <span>SMART TRADE</span></div>
+    <div class="av-wrap">
+      <button class="av-btn" id="av-btn" onclick="toggleDrop()">
+        <svg id="av-svg" viewBox="0 0 24 24"><path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/></svg>
+        <img id="av-photo" class="av-photo" src="" alt=""/>
+      </button>
+      <div class="av-drop" id="av-drop">
+              <div class="dd-item" onclick="openProfile()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile
+              </div>
+              <div class="dd-item" onclick="window.location.href='sign in/index sign in.html'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out
+              </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div id="layout">
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <button class="nav-btn active" onclick="showPage('dashboard',this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+      </button>
+       <button class="nav-btn" onclick="showPage('copyTrade',this)">
+         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Copy Trade
+       </button>
+       <button class="nav-btn" onclick="showPage('generate',this)">
+         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Generate key
+       </button>
+      <button class="nav-btn" onclick="showPage('manage',this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="22"/><line x1="2" y1="12" x2="8" y2="12"/><line x1="16" y1="12" x2="22" y2="12"/></svg>Manage EAs
+      </button>
+      <button class="nav-btn" onclick="showPage('stats',this)">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Key Stats
+      </button>
+      <div class="nav-spacer"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main-area">
+      <div class="alert-bar">✅ EA SMART TRADE is live! <b id="active-count">—</b> active licences. Mentor ID → <b id="mentor-id">—</b></div>
+      <div id="content">
+
+         <!-- COPY TRADE - ADMIN SIGNALS -->
+         <div class="page" id="page-copyTrade">
+           <div id="copy-trade-panel">
+             <!-- SEND NEW SIGNAL -->
+             <div class="ct-card ct-aggro">
+               <div class="ct-header">
+                 <div class="ct-title-row">
+                   <span class="ct-emoji">⚡</span>
+                   <div class="ct-title">SEND TRADE SIGNAL</div>
+                 </div>
+                 <div class="ct-sub">Push trades to all connected mobile robots instantly_</div>
+               </div>
+               <div class="ct-form">
+                 <div class="ct-row">
+                   <label class="ct-label">SELECT PAIR_</label>
+                   <select class="ct-select" id="ct-pair">
+                     <option value="">Choose Trading Pair_</option>
+                     <option value="EURUSD">EURUSD</option>
+                     <option value="GBPUSD">GBPUSD</option>
+                     <option value="USDJPY">USDJPY</option>
+                     <option value="XAUUSD">XAUUSD</option>
+                     <option value="NAS100">NAS100</option>
+                     <option value="US30">US30</option>
+                     <option value="BTCUSD">BTCUSD</option>
+                     <option value="ETHUSD">ETHUSD</option>
+                   </select>
+                 </div>
+                 <div class="ct-row">
+                   <label class="ct-label">DIRECTION_</label>
+                   <div class="ct-dir-row">
+                     <button class="ct-dir-btn ct-buy" id="ct-buy" onclick="setDirection('BUY')">BUY</button>
+                     <button class="ct-dir-btn ct-sell" id="ct-sell" onclick="setDirection('SELL')">SELL</button>
+                   </div>
+                 </div>
+                 <div class="ct-row ct-three-col">
+                   <div class="ct-col">
+                     <label class="ct-label">TAKE PROFIT (TP)</label>
+                     <input class="ct-input" type="number" id="ct-tp" placeholder="e.g. 1.0850" step="0.00001"/>
+                   </div>
+                   <div class="ct-col">
+                     <label class="ct-label">STOP LOSS (SL)</label>
+                     <input class="ct-input" type="number" id="ct-sl" placeholder="e.g. 1.0800" step="0.00001"/>
+                   </div>
+                   <div class="ct-col">
+                     <label class="ct-label">LOT SIZE</label>
+                     <input class="ct-input" type="number" id="ct-lot" placeholder="0.01" step="0.01" min="0.01"/>
+                   </div>
+                 </div>
+                 <button class="ct-send-btn" id="ct-send" onclick="sendSignal()">
+                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                   SEND SIGNAL
+                 </button>
+               </div>
+             </div>
+
+             <!-- ACTIVE SIGNALS -->
+             <div class="ct-card ct-active-card ct-aggro">
+               <div class="ct-card-title">
+                 <span class="ct-dot"></span>
+                 ACTIVE SIGNALS
+               </div>
+               <div class="ct-table-wrap">
+                 <table class="ct-table">
+                   <thead>
+                     <tr>
+                       <th>PAIR</th>
+                       <th>TYPE</th>
+                       <th>TP</th>
+                       <th>SL</th>
+                       <th>LOT</th>
+                       <th>TIME</th>
+                       <th>STATUS</th>
+                     </tr>
+                   </thead>
+                   <tbody id="ct-active-body"></tbody>
+                 </table>
+               </div>
+             </div>
+
+             <!-- SIGNAL HISTORY -->
+             <div class="ct-card ct-aggro">
+               <div class="ct-card-title">
+                 <span class="ct-history-icon">📋</span>
+                 SIGNAL HISTORY
+               </div>
+               <div class="ct-table-wrap">
+                 <table class="ct-table">
+                   <thead>
+                     <tr>
+                       <th>PAIR</th>
+                       <th>TYPE</th>
+                       <th>TP</th>
+                       <th>SL</th>
+                       <th>LOT</th>
+                       <th>SENT</th>
+                       <th>RESULT</th>
+                     </tr>
+                   </thead>
+                   <tbody id="ct-history-body"></tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <!-- DASHBOARD -->
+        <div class="page active" id="page-dashboard">
+          <div class="date-pill">Today ( <span id="today-str"></span> )</div>
+          <div class="dash-grid">
+            <div class="stat-card c-blue"><div class="sc-lbl">Total Licences</div><div class="sc-val" id="stat-total">—</div><div class="sc-desc">All time EA users.</div></div>
+            <div class="stat-card c-white"><div class="sc-lbl">Active Subscriptions</div><div class="sc-val" id="stat-active">—</div><div class="sc-desc">Current Active EA Users.</div></div>
+            <div class="stat-card c-dark"><div class="sc-lbl">Total EAs</div><div class="sc-val" id="stat-eas">—</div><div class="sc-desc">All EAs you are Licencing</div></div>
+            <div class="stat-card c-pink"><div class="sc-lbl">Maximum Licences</div><div class="sc-val">2000</div><div class="sc-desc">Total licences You can generate</div></div>
+          </div>
+        </div>
+
+        <!-- GENERATE KEY -->
+        <div class="page" id="page-generate">
+          <div id="gen-form">
+            <div class="form-card">
+              <div class="fc-title">GENERATE LICENCE KEY_</div>
+              <div class="fc-sub">Enter user details and the EA you want to authorise</div>
+              <input class="fi" type="text" id="gen-user" placeholder="User name" oninput="checkGenBtn()"/>
+              <select class="fi" id="gen-ea" onchange="checkGenBtn()"><option value="">Select an EA_</option></select>
+              <select class="fi" id="gen-plan" onchange="checkGenBtn()">
+                <option value="">Select a Plan</option>
+                <option value="30">30 days plan</option>
+                <option value="90">90 days plan</option>
+                <option value="180">180 days plan</option>
+                <option value="365">365 days plan</option>
+              </select>
+              <label class="ck-row"><input type="checkbox" id="gen-ck" onchange="checkGenBtn()"/> I confirm</label>
+              <button class="blue-btn" id="gen-btn" disabled onclick="doGenerate()">Generate</button>
+            </div>
+          </div>
+          <div id="gen-result" style="display:none">
+            <div class="result-card">
+              <div class="rc-meta">Licence Details</div>
+              <div class="rc-key" id="res-key"></div>
+              <div class="badge-row"><span class="badge bg-green">Active</span><span class="badge bg-gray">Not Yet Used</span></div>
+              <div class="rc-ea" id="res-ea"></div>
+              <div class="rc-note" id="res-note"></div>
+              <div class="rc-user" id="res-user"></div>
+              <div class="rc-info" id="res-info"></div>
+              <button class="red-btn" id="res-deact">Deactivate</button>
+            </div>
+            <button class="back-btn" onclick="resetGenerate()">← Generate Another Key</button>
+          </div>
+        </div>
+
+        <!-- MANAGE EAs -->
+        <div class="page" id="page-manage">
+          <div id="manage-list">
+            <div class="two-col">
+              <div class="mc">
+                <div class="mc-title">NEW EA</div>
+                <div class="mc-sub">Add a new EA to licence_</div>
+                <label class="fl">EA Name</label>
+                <input class="fi" id="new-ea-name" placeholder="Full EA name including version" oninput="checkEaBtn()"/>
+                <label class="ck-row" style="margin-top:4px"><input type="checkbox" id="ea-ck" onchange="checkEaBtn()"/> I confirm I am an admin</label>
+                <div class="btn-row">
+                  <button class="add-btn" id="ea-add-btn" disabled onclick="doAddEa()">Add EA_</button>
+                  <button class="cancel-btn" onclick="document.getElementById('new-ea-name').value='';document.getElementById('ea-ck').checked=false;checkEaBtn()">Cancel</button>
+                </div>
+              </div>
+              <div class="mc">
+                <div class="mc-title">TOTAL EAs</div>
+                <div class="mc-sub">Click an EA name to manage it</div>
+                <table class="ea-tbl"><thead><tr><th>EA</th><th style="text-align:right">Users</th></tr></thead><tbody id="ea-tbody"></tbody></table>
+              </div>
+            </div>
+          </div>
+          <div id="ea-detail" style="display:none">
+            <button class="back-btn" onclick="showManageList()" style="margin-bottom:16px">← Back</button>
+            <div class="ea-card">
+              <div class="ea-meta">EA Details</div>
+              <div class="ea-hash" id="ea-hash"></div>
+              <div class="ea-name" id="ea-name-lbl"></div>
+              <div class="ea-desc" id="ea-desc"></div>
+              <span class="dl-link">Download</span>
+              <span class="host-txt"> Self Hosting MT4 &amp; MT5 files.</span>
+              <div class="sym-section">
+                <div class="sym-title">Trading Symbols</div>
+                <div class="sym-sub">Add the symbols this EA will trade. Type &amp; press Enter or click Add.</div>
+                <div class="sym-row">
+                  <input class="sym-input" id="sym-inp" placeholder="e.g. EURUSD, XAUUSD, NAS100" onkeydown="if(event.key==='Enter')addSym()"/>
+                  <button class="sym-add" onclick="addSym()">+ Add</button>
+                </div>
+                <div class="sym-chips" id="sym-chips"></div>
+                <button class="green-btn" onclick="saveSym()">Save Symbols ✓</button>
+              </div>
+              <div style="border-top:1px solid #dde3ea;margin-top:22px;padding-top:18px">
+                <button class="ea-del-btn" id="ea-del-btn">Delete EA</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KEY STATS -->
+        <div class="page" id="page-stats">
+          <div id="stats-list">
+            <div class="stats-card">
+              <div class="st-title">ALL LICENCE KEYs</div>
+              <div class="st-sub">All keys in the system</div>
+              <table class="keys-tbl"><thead><tr><th>User</th><th>Key</th><th>EA</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody id="keys-tbody"></tbody></table>
+            </div>
+          </div>
+          <div id="key-detail" style="display:none">
+            <button class="back-btn" onclick="showStatsList()" style="margin-bottom:14px">← Back</button>
+            <div class="result-card">
+              <div class="rc-meta">Licence Details</div>
+              <div class="rc-key" id="kd-key"></div>
+              <div class="badge-row" id="kd-badges"></div>
+              <div class="rc-ea" id="kd-ea"></div>
+              <div class="rc-note" id="kd-note"></div>
+              <div class="rc-user" id="kd-user"></div>
+              <div class="rc-info" id="kd-info"></div>
+              <button class="red-btn" id="kd-deact">Deactivate</button>
+            </div>
+          </div>
+        </div>
+
+         <!-- PROFILE -->
+         <div class="page" id="page-profile">
+           <div class="profile-outer">
+             <div class="profile-card">
+               <div style="text-align:center;margin-bottom:18px">
+                 <span style="display:inline-block;background:rgba(34,197,94,.15);color:#22c55e;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid #22c55e">
+                   ✓ Data synced from sign-up
+                 </span>
+               </div>
+               <div class="photo-area">
+                <div class="photo-circle" id="photo-circle" onclick="openFilePicker()">
+                  <span id="photo-emoji">👤</span>
+                  <img id="photo-img" src="" alt=""/>
+                </div>
+                <div class="photo-hint">Tap circle or choose file below</div>
+              </div>
+              <label class="prof-label">Profile Photo:</label>
+              <div style="margin-bottom:12px">
+                <input type="file" id="photo-input" accept="image/*" style="display:block;width:100%;padding:10px 12px;border:1.5px solid #dde3ea;border-radius:10px;font-size:14px;background:#fff;color:#1e293b;cursor:pointer;font-family:'DM Sans',sans-serif;"/>
+                <div style="font-size:11.5px;color:#94a3b8;margin-top:5px;padding-left:2px" id="file-name-txt"></div>
+              </div>
+              <button class="upload-btn" id="upload-btn" onclick="doUpload()">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                Upload Photo
+              </button>
+              <label class="prof-label">First name:</label>
+              <input class="prof-input" id="p-firstname" type="text" placeholder="First name"/>
+              <label class="prof-label">Display Name:</label>
+              <input class="prof-input" id="p-display" type="text" placeholder="Display name"/>
+              <label class="prof-label">Phone:</label>
+              <input class="prof-input" id="p-phone" type="tel" placeholder="Phone number"/>
+               <label class="prof-label">Email:</label>
+               <input class="prof-input" id="p-email" type="email" readonly/>
+               
+               <div style="background:#f1f5f9;border-radius:10px;padding:15px;margin-bottom:16px">
+                 <div style="font-size:12px;color:#64748b;margin-bottom:5px">Your Mentor ID</div>
+                 <div style="font-size:24px;font-weight:800;color:#ef4444;font-family:'DM Mono',monospace">#<span id="profile-mentor-id">—</span></div>
+                 <div style="font-size:11px;color:#94a3b8;margin-top:5px">Unique ID for your mentor workspace</div>
+               </div>
+               
+               <button class="save-prof-btn" onclick="saveProfile()">Update Profile</button>
+            </div>
+            <div class="prof-copy">EA SMART TRADE © 2024 · All rights reserved</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── LOCAL STORAGE ───
+const LS={
+  get:(k)=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+};
+
+// ─── SUPABASE (optional) ───
+const SB_URL="https://YOUR_PROJECT.supabase.co";
+const SB_KEY="YOUR_ANON_KEY";
+const DEMO=SB_URL.includes("YOUR_PROJECT");
+const SBH={"Content-Type":"application/json","apikey":SB_KEY,"Authorization":`Bearer ${SB_KEY}`,"Prefer":"return=representation"};
+async function sbPost(t,b){if(DEMO)return null;try{const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:"POST",headers:SBH,body:JSON.stringify(b)});return r.ok?r.json():null}catch{return null}}
+async function sbPatch(t,id,b){if(DEMO)return;try{await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:"PATCH",headers:SBH,body:JSON.stringify(b)})}catch{}}
+async function sbDel(t,id){if(DEMO)return;try{await fetch(`${SB_URL}/rest/v1/${t}?id=eq.${id}`,{method:"DELETE",headers:SBH})}catch{}}
+
+// ─── HELPERS ───
+const MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtD(d){return`${String(d.getDate()).padStart(2,"0")}-${MO[d.getMonth()]}-${d.getFullYear()}`}
+function genHash(){let s='';for(let i=0;i<32;i++)s+='abcdef0123456789'[Math.floor(Math.random()*16)];return s}
+
+// ─── KEY FORMAT ───
+function genKey(){
+  const alpha='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const rA=(n)=>Array.from({length:n},()=>alpha[Math.floor(Math.random()*alpha.length)]).join('');
+  const rD=(n)=>Array.from({length:n},()=>Math.floor(Math.random()*10)).join('');
+  return `EAV-${rA(4)}-${rD(3)}-${rD(4)}`;
+}
+
+// ─── MENTOR ID ───
+// Get or generate mentor ID from URL param or localStorage
+function getMentorId() {
+  const params = new URLSearchParams(window.location.search);
+  let mentorId = params.get('mentor');
+  if (mentorId) {
+    // Persist mentor ID from URL to localStorage
+    LS.set('ev_mentor_id', mentorId);
+  } else {
+    mentorId = LS.get('ev_mentor_id');
+    if (!mentorId) {
+      mentorId = String(Math.floor(Math.random() * 9000) + 1000);
+      LS.set('ev_mentor_id', mentorId);
+    }
+  }
+  return mentorId;
+}
+const MENTOR_ID = getMentorId();
+
+// ─── NAMESPACED STORAGE KEYS ───
+function getMentorKey(base) {
+  return `${base}_${MENTOR_ID}`;
+}
+
+// ─── STATE ───
+let EAS=LS.get(getMentorKey("ev_eas"))||[];
+let KEYS=LS.get(getMentorKey("ev_keys"))||[];
+let PROF=LS.get(getMentorKey("ev_profile"))||{firstname:"Mentor",display:"Admin",phone:"",email:"",photo:null};
+let copyTrades = LS.get(getMentorKey("ev_copy_trades")) || [];
+
+// Auto-generate default data for new mentor if empty
+if(EAS.length === 0){
+  EAS = [
+    {id:1,mentor:MENTOR_ID,name:"PRECISION SCALPER AI",   hash:genHash(),symbols:["XAUUSD","NAS100","EURUSD"]},
+    {id:2,mentor:MENTOR_ID,name:"DIVINE SCALPER ELITE V2",hash:genHash(),symbols:["GBPUSD","US30"]}
+  ];
+  saveEas();
+}
+if(KEYS.length === 0){
+  KEYS = [
+    {id:1,mentor:MENTOR_ID,user_name:"Demo User",    key_value:"EAV-48H2-809-3572",ea_name:"PRECISION SCALPER AI",   status:"Active",created:new Date().toISOString().split("T")[0],expires:new Date(Date.now()+31536000000).toISOString().split("T")[0],plan:"365 days plan",in_use:false}
+  ];
+  saveKeys();
+}
+
+// Filter data by current mentor
+function getMyEas(){return EAS.filter(e=>e.mentor===MENTOR_ID)}
+function getMyKeys(){return KEYS.filter(k=>k.mentor===MENTOR_ID)}
+function saveEas(){LS.set(getMentorKey("ev_eas"),EAS)}
+function saveKeys(){LS.set(getMentorKey("ev_keys"),KEYS)}
+function saveProf(){LS.set(getMentorKey("ev_profile"),PROF)}
+function saveCopyTrades(){LS.set(getMentorKey("ev_copy_trades"), copyTrades)}
+
+
+// ─── BOOT ───
+(function boot(){
+  document.getElementById("today-str").textContent=fmtD(new Date());
+  document.getElementById("mentor-id").textContent=MENTOR_ID;
+  loadProfile(); refreshDash(); refreshEaSelect(); renderEaTable(); renderKeysTable(); checkEaBtn();
+  initCopyTrade(); renderCopyTradeActive(); renderCopyTradeHistory();
+})();
+
+// ─── PROFILE ───
+function loadProfile(){
+  document.getElementById("p-firstname").value=PROF.firstname||"";
+  document.getElementById("p-display").value  =PROF.display||"";
+  document.getElementById("p-phone").value    =PROF.phone||"";
+  document.getElementById("p-email").value    =PROF.email||"";
+  document.getElementById("profile-mentor-id").textContent = MENTOR_ID;
+  if(PROF.photo)applyPhoto(PROF.photo);
+}
+function openFilePicker(){const i=document.getElementById("photo-input");i.value="";i.click()}
+document.getElementById("photo-input").addEventListener("change",function(e){
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  document.getElementById("file-name-txt").textContent="Selected: "+f.name;
+  const r=new FileReader();
+  r.onload=function(ev){
+    pendingPhoto=ev.target.result;
+    const img=document.getElementById("photo-img"),em=document.getElementById("photo-emoji");
+    img.src=pendingPhoto;img.style.display="block";em.style.display="none";
+    toast("Photo selected! Tap Upload Photo to save 📸");
+  };
+  r.readAsDataURL(f);
+});
+function doUpload(){
+  if(!pendingPhoto){toast("Please choose a photo first 📁");return;}
+  const btn=document.getElementById("upload-btn");
+  btn.classList.add("busy");btn.textContent="Uploading…";
+  setTimeout(()=>{
+    PROF.photo=pendingPhoto;saveProf();applyPhoto(pendingPhoto);
+    btn.classList.remove("busy");
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg> Upload Photo';
+    toast("Photo saved ✓");pendingPhoto=null;
+  },900);
+}
+function applyPhoto(src){
+  const img=document.getElementById("photo-img"),em=document.getElementById("photo-emoji");
+  img.src=src;img.style.display="block";em.style.display="none";
+  const ap=document.getElementById("av-photo"),as=document.getElementById("av-svg");
+  ap.src=src;ap.style.display="block";as.style.display="none";
+}
+function saveProfile(){
+  PROF.firstname=document.getElementById("p-firstname").value.trim();
+  PROF.display  =document.getElementById("p-display").value.trim();
+  PROF.phone    =document.getElementById("p-phone").value.trim();
+  saveProf();toast("Profile saved ✓");
+}
+
+// ─── DASHBOARD ───
+function refreshDash(){
+  const myKeys = getMyKeys();
+  const myEas = getMyEas();
+  document.getElementById("stat-total").textContent = myKeys.length;
+  document.getElementById("stat-active").textContent = myKeys.filter(k=>k.status==="Active"&&k.in_use).length;
+  document.getElementById("stat-eas").textContent = myEas.length;
+  document.getElementById("active-count").textContent = myKeys.filter(k=>k.status==="Active").length;
+}
+
+// ─── GENERATE KEY ───
+function refreshEaSelect(){
+  const s=document.getElementById("gen-ea"),c=s.value;
+  s.innerHTML='<option value="">Select an EA_</option>';
+  getMyEas().forEach(ea=>{const o=document.createElement("option");o.value=ea.name;o.textContent=ea.name;if(ea.name===c)o.selected=true;s.appendChild(o)});
+}
+function checkGenBtn(){
+  const ok=document.getElementById("gen-user").value.trim()&&document.getElementById("gen-ea").value&&document.getElementById("gen-plan").value&&document.getElementById("gen-ck").checked;
+  document.getElementById("gen-btn").disabled=!ok;
+}
+async function doGenerate(){
+  const user=document.getElementById("gen-user").value.trim();
+  const ea  =document.getElementById("gen-ea").value;
+  const days=parseInt(document.getElementById("gen-plan").value);
+  const today=new Date(),exp=new Date(today);exp.setDate(exp.getDate()+days);
+  const nk={id:Date.now(),mentor:MENTOR_ID,user_name:user,key_value:genKey(),ea_name:ea,status:"Active",
+    created:today.toISOString().split("T")[0],expires:exp.toISOString().split("T")[0],
+    plan:days+" days plan",in_use:false};
+  KEYS.unshift(nk);saveKeys();
+  const res=await sbPost("licence_keys",{user_name:nk.user_name,key_value:nk.key_value,ea_name:nk.ea_name,status:nk.status,created:nk.created,expires:nk.expires,plan:nk.plan,in_use:false});
+  if(res?.[0])nk.id=res[0].id;
+  refreshDash();renderEaTable();renderKeysTable();
+  document.getElementById("res-key").textContent=nk.key_value;
+  document.getElementById("res-ea").textContent=nk.ea_name;
+  document.getElementById("res-note").textContent="Licence key for "+nk.ea_name+". Share with user to grant access.";
+  document.getElementById("res-user").textContent=nk.user_name;
+  document.getElementById("res-info").innerHTML=nk.plan+"<br>Created : "+fmtD(today)+"<br>Expires : "+fmtD(exp);
+  document.getElementById("res-deact").onclick=()=>deactivateKey(nk.id);
+  document.getElementById("gen-form").style.display="none";
+  document.getElementById("gen-result").style.display="block";
+}
+function resetGenerate(){
+  document.getElementById("gen-user").value="";
+  document.getElementById("gen-ea").value="";
+  document.getElementById("gen-plan").value="";
+  document.getElementById("gen-ck").checked=false;
+  checkGenBtn();
+  document.getElementById("gen-form").style.display="block";
+  document.getElementById("gen-result").style.display="none";
+}
+
+// ─── MANAGE EAs ───
+function checkEaBtn(){
+  const ok=document.getElementById("new-ea-name").value.trim()&&document.getElementById("ea-ck").checked;
+  document.getElementById("ea-add-btn").disabled=!ok;
+}
+async function doAddEa(){
+  const n=document.getElementById("new-ea-name").value.trim().toUpperCase();
+  if(!n||getMyEas().find(e=>e.name===n)){toast("EA already exists or name empty");return;}
+  const ea={id:Date.now(),mentor:MENTOR_ID,name:n,hash:genHash(),symbols:[]};
+  EAS.push(ea);saveEas();
+  const res=await sbPost("eas",{name:ea.name,hash:ea.hash,symbols:[]});
+  if(res?.[0])ea.id=res[0].id;
+  document.getElementById("new-ea-name").value="";document.getElementById("ea-ck").checked=false;
+  checkEaBtn();refreshEaSelect();renderEaTable();refreshDash();toast("EA added ✓");
+}
+function renderEaTable(){
+  const b=document.getElementById("ea-tbody");
+  const myEas = getMyEas();
+  const myKeys = getMyKeys();
+  if(!myEas.length){b.innerHTML='<tr><td colspan="2" style="color:#94a3b8;padding:14px 0">No EAs yet.</td></tr>';return;}
+  b.innerHTML=myEas.map(ea=>`<tr><td style="color:#ef4444;font-weight:600;cursor:pointer" onclick="openEaDetail(${ea.id})">${ea.name}</td><td style="text-align:right;font-weight:700;color:#1e293b">${myKeys.filter(k=>k.ea_name===ea.name).length}</td></tr>`).join("");
+}
+function showManageList(){document.getElementById("manage-list").style.display="block";document.getElementById("ea-detail").style.display="none"}
+function openEaDetail(id){
+  const ea=EAS.find(e=>e.id===id);if(!ea)return;
+  curEaId=id;
+  document.getElementById("ea-hash").textContent=ea.hash;
+  document.getElementById("ea-name-lbl").textContent=ea.name;
+  document.getElementById("ea-desc").textContent="This is the EA code for "+ea.name+". Put this inside your EA. Do not share this code with anyone.";
+  renderChips(ea.symbols||[]);
+  document.getElementById("sym-inp").value="";
+  document.getElementById("ea-del-btn").onclick=async()=>{
+    if(!confirm("Delete "+ea.name+"?"))return;
+    await sbDel("eas",ea.id);
+    EAS=EAS.filter(e=>e.id!==id);saveEas();
+    refreshEaSelect();renderEaTable();refreshDash();showManageList();toast("EA deleted");
+  };
+  document.getElementById("manage-list").style.display="none";
+  document.getElementById("ea-detail").style.display="block";
+}
+function addSym(){
+  const inp=document.getElementById("sym-inp"),val=inp.value.trim().toUpperCase();
+  if(!val||!curEaId)return;
+  const ea=EAS.find(e=>e.id===curEaId);if(!ea)return;
+  if(!ea.symbols)ea.symbols=[];
+  if(!ea.symbols.includes(val)){ea.symbols.push(val);renderChips(ea.symbols);}
+  inp.value="";inp.focus();
+}
+function removeSym(s){const ea=EAS.find(e=>e.id===curEaId);if(!ea)return;ea.symbols=ea.symbols.filter(x=>x!==s);renderChips(ea.symbols)}
+function renderChips(syms){document.getElementById("sym-chips").innerHTML=(syms||[]).map(s=>`<span class="chip">${s}<button onclick="removeSym('${s}')">✕</button></span>`).join("")}
+async function saveSym(){const ea=EAS.find(e=>e.id===curEaId);if(!ea)return;saveEas();await sbPatch("eas",ea.id,{symbols:ea.symbols});toast("Symbols saved ✓")}
+
+// ─── KEY STATS ───
+function renderKeysTable(){
+  const b=document.getElementById("keys-tbody");
+  const myKeys = getMyKeys();
+  if(!myKeys.length){b.innerHTML='<tr><td colspan="6" style="color:#94a3b8;padding:18px 9px">No keys yet.</td></tr>';return;}
+  b.innerHTML=myKeys.map(k=>`
+    <tr>
+      <td style="font-weight:600;color:#1e293b">${k.user_name}</td>
+      <td><span class="k-link" onclick="openKeyDetail(${k.id})">${k.key_value}</span></td>
+      <td style="color:#ef4444;font-size:11.5px;font-weight:500">${k.ea_name}</td>
+      <td><span class="badge ${k.status==="Active"?"bg-green":"bg-red"}" style="font-size:10px">${k.status}</span></td>
+      <td style="color:#64748b">${k.created||""}</td>
+      <td><button class="del-btn" onclick="deleteKey(${k.id})">Delete</button></td>
+    </tr>`).join("");
+}
+async function deleteKey(id){
+  await sbDel("licence_keys",id);
+  KEYS=KEYS.filter(k=>k.id!==id);saveKeys();
+  renderEaTable();refreshDash();renderKeysTable();toast("Key deleted");
+}
+async function deactivateKey(id){
+  await sbPatch("licence_keys",id,{status:"Inactive"});
+  const k=KEYS.find(x=>x.id===id);if(k){k.status="Inactive";saveKeys();}
+  renderKeysTable();refreshDash();toast("Key deactivated");
+}
+function openKeyDetail(id){
+  const k=KEYS.find(x=>x.id===id);if(!k)return;
+  document.getElementById("kd-key").textContent=k.key_value;
+  document.getElementById("kd-ea").textContent=k.ea_name;
+  document.getElementById("kd-note").textContent="Licence key for "+k.ea_name+". Share with user to grant access.";
+  document.getElementById("kd-user").textContent=k.user_name;
+  document.getElementById("kd-info").innerHTML=k.plan+"<br>Created : "+(k.created||"")+"<br>Expires : "+(k.expires||"");
+  document.getElementById("kd-badges").innerHTML=`<span class="badge ${k.status==="Active"?"bg-green":"bg-red"}">${k.status}</span><span class="badge bg-gray">${k.in_use?"In Use":"Not Yet Used"}</span>`;
+  const db=document.getElementById("kd-deact");
+  db.style.display=k.status==="Active"?"inline-block":"none";
+  db.onclick=async()=>{await deactivateKey(id);openKeyDetail(id);};
+  document.getElementById("stats-list").style.display="none";
+  document.getElementById("key-detail").style.display="block";
+}
+function showStatsList(){document.getElementById("stats-list").style.display="block";document.getElementById("key-detail").style.display="none"}
+
+// ─── NAV ───
+function showPage(id,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  if(btn)btn.classList.add("active");
+  if(id==="generate")resetGenerate();
+  if(id==="stats")showStatsList();
+  if(id==="manage")showManageList();
+  if(id==="copyTrade"){renderCopyTradeActive();renderCopyTradeHistory();}
+  closeSidebar();
+  document.getElementById("av-drop").classList.remove("open");
+}
+function openProfile(){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("page-profile").classList.add("active");
+  document.getElementById("av-drop").classList.remove("open");
+  closeSidebar();
+}
+function toggleSidebar(){
+  const s=document.getElementById("sidebar"),ov=document.getElementById("sidebar-overlay");
+  if(window.innerWidth<=700){s.classList.toggle("open");ov.classList.toggle("show");}
+  else{s.style.display=s.offsetWidth>0?"none":"flex";}
+}
+function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebar-overlay").classList.remove("show")}
+function toggleDrop(){document.getElementById("av-drop").classList.toggle("open")}
+document.addEventListener("click",e=>{if(!e.target.closest(".av-wrap"))document.getElementById("av-drop").classList.remove("open")});
+
+// ─── TOAST ───
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.style.display="block";
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display="none",3000);
+}
+
+// ─── COPY TRADE ───
+function initCopyTrade(){
+  // Set default direction
+  setDirection('BUY');
+}
+function setDirection(dir){
+  currentDirection = dir;
+  const buyBtn = document.getElementById("ct-buy");
+  const sellBtn = document.getElementById("ct-sell");
+  if(dir === 'BUY'){
+    buyBtn.classList.add("active");
+    sellBtn.classList.remove("active");
+  } else {
+    sellBtn.classList.add("active");
+    buyBtn.classList.remove("active");
+  }
+}
+function sendSignal(){
+  const pair = document.getElementById("ct-pair").value;
+  const tp = document.getElementById("ct-tp").value;
+  const sl = document.getElementById("ct-sl").value;
+  const lot = document.getElementById("ct-lot").value;
+
+  // Validate
+  if(!pair){toast("⚠ Select a trading pair");return;}
+  if(!tp){toast("⚠ Set Take Profit");return;}
+  if(!sl){toast("⚠ Set Stop Loss");return;}
+  if(!lot || parseFloat(lot) <= 0){toast("⚠ Set valid lot size");return;}
+
+  const signal = {
+    id: Date.now(),
+    pair: pair,
+    direction: currentDirection,
+    tp: parseFloat(tp),
+    sl: parseFloat(sl),
+    lot: parseFloat(lot),
+    sentAt: new Date().toISOString(),
+    status: "PENDING"
+  };
+
+   copyTrades.unshift(signal);
+   saveCopyTrades();
+   renderCopyTradeActive();
+   renderCopyTradeHistory();
+   
+   // Send to mobile robot via webhook
+   sendToMobileRobot(signal);
+   
+   // Reset form
+   document.getElementById("ct-pair").value = "";
+   document.getElementById("ct-tp").value = "";
+   document.getElementById("ct-sl").value = "";
+   document.getElementById("ct-lot").value = "";
+   setDirection('BUY');
+
+   toast("✅ Signal sent to all robots!");
+ }
+ 
+ async function sendToMobileRobot(signal) {
+   try {
+     // Send signal to backend webhook which dispatches to mobile & EA
+     const response = await fetch('backend/webhook.php', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({
+         mentor_id: MENTOR_ID,
+         pair: signal.pair,
+         direction: signal.direction,
+         tp: signal.tp,
+         sl: signal.sl,
+         lot: signal.lot,
+         api_key: 'ea_smart_trade_secret_key' // Change in production!
+       }),
+     });
+     
+     const result = await response.json();
+     if (result.success) {
+       console.log('Signal sent to mobile robots via webhook:', result);
+     } else {
+       console.error('Failed to send signal:', result.error);
+     }
+   } catch (error) {
+     console.error('Error sending signal to mobile robots:', error);
+   }
+ }
+function deleteSignal(id){
+  if(!confirm("Delete this signal?")) return;
+  copyTrades = copyTrades.filter(t => t.id !== id);
+  saveCopyTrades();
+  renderCopyTradeActive();
+  renderCopyTradeHistory();
+  toast("Signal deleted");
+}
+function closeSignal(id){
+  const signal = copyTrades.find(t => t.id === id);
+  if(signal){
+    signal.status = "CLOSED";
+    saveCopyTrades();
+    renderCopyTradeActive();
+    toast("Signal closed manually");
+  }
+}
+function renderCopyTradeActive(){
+  const tbody = document.getElementById("ct-active-body");
+  const activeTrades = copyTrades.filter(t => t.status === "PENDING");
+
+  if(activeTrades.length === 0){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No active signals. Send one above.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = activeTrades.map(trade => {
+    const timeStr = fmtTime(new Date(trade.sentAt));
+    return `
+      <tr>
+        <td style="font-weight:700;color:#e2e8f0;font-family:'DM Mono',monospace">${trade.pair}</td>
+        <td><span class="ct-badge ${trade.direction==='BUY'?'ct-buy-badge':'ct-sell-badge'}">${trade.direction}</span></td>
+        <td style="color:#22c55e;font-family:'DM Mono',monospace;font-weight:600">${trade.tp}</td>
+        <td style="color:#ef4444;font-family:'DM Mono',monospace;font-weight:600">${trade.sl}</td>
+        <td style="color:#e2e8f0;font-family:'DM Mono',monospace">${trade.lot}</td>
+        <td class="ct-time">${timeStr}</td>
+        <td><span class="ct-badge ct-pending">ACTIVE</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+function renderCopyTradeHistory(){
+  const tbody = document.getElementById("ct-history-body");
+  const history = copyTrades.filter(t => t.status !== "PENDING");
+
+  if(history.length === 0){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No closed signals yet.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = history.map(trade => {
+    const sentTime = fmtTime(new Date(trade.sentAt));
+    const statusClass = trade.status === "FILLED" ? "ct-filled" : trade.status === "STOPPED" ? "ct-stopped" : "";
+    return `
+      <tr>
+        <td style="font-weight:700;color:#e2e8f0;font-family:'DM Mono',monospace">${trade.pair}</td>
+        <td><span class="ct-badge ${trade.direction==='BUY'?'ct-buy-badge':'ct-sell-badge'}">${trade.direction}</span></td>
+        <td style="color:#22c55e;font-family:'DM Mono',monospace;font-weight:600">${trade.tp}</td>
+        <td style="color:#ef4444;font-family:'DM Mono',monospace;font-weight:600">${trade.sl}</td>
+        <td style="color:#e2e8f0;font-family:'DM Mono',monospace">${trade.lot}</td>
+        <td class="ct-time">${sentTime}</td>
+        <td><span class="ct-badge ${statusClass}">${trade.status}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+function fmtTime(date){
+  const h = date.getHours().toString().padStart(2,'0');
+  const m = date.getMinutes().toString().padStart(2,'0');
+  const s = date.getSeconds().toString().padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mobile Trading Robot - Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .phone-frame {
+      width: 375px;
+      height: 812px;
+      background: #000;
+      border-radius: 40px;
+      border: 12px solid #1a1a1a;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+      position: relative;
+    }
+    .notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 30px;
+      background: #000;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      z-index: 100;
+    }
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      background: #f5f5f5;
+      padding-top: 40px;
+    }
+    .header {
+      background: #1e40af;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .logout-banner {
+      background: #dc2626;
+      color: white;
+      padding: 8px 20px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .section {
+      margin: 15px;
+      padding: 15px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #1e40af;
+    }
+    .signal-card {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .signal-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #0066cc;
+    }
+    .signal-details {
+      font-size: 13px;
+      color: #666;
+    }
+    .signal-time {
+      font-size: 11px;
+      color: #999;
+      text-align: right;
+    }
+    .trade-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #16a34a;
+    }
+    .trade-profit {
+      font-size: 14px;
+      color: #16a34a;
+      font-weight: 600;
+    }
+    .profit-positive { color: #16a34a; }
+    .profit-negative { color: #dc2626; }
+    .trade-time {
+      font-size: 11px;
+      color: #999;
+    }
+    .license-input {
+      width: 100%;
+      padding: 15px;
+      margin: 20px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .login-btn {
+      margin: 0 20px 20px;
+      padding: 15px;
+      background: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      width: calc(100% - 40px);
+    }
+    .empty-state {
+      text-align: center;
+      color: #999;
+      padding: 40px 20px;
+      font-size: 14px;
+    }
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 15px;
+      background: #1e40af;
+      color: white;
+      font-size: 11px;
+    }
+    .nav-tabs {
+      display: flex;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    .nav-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+    .nav-tab.active {
+      color: #1e40af;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="notch"></div>
+    <div class="screen">
+      <!-- License Entry Screen -->
+      <div id="login-screen">
+        <div style="text-align: center; margin-top: 100px;">
+          <div style="font-size: 48px; margin-bottom: 20px;">📈</div>
+          <h2 style="color: #1e40af; margin-bottom: 10px;">TRADING ROBOT</h2>
+          <p style="color: #666; margin-bottom: 30px; font-size: 14px;">Enter your license key to connect</p>
+        </div>
+        <input type="text" class="license-input" placeholder="License Key (e.g. EAV-XXXX-XXX-XXXX)" id="license-key">
+        <button class="login-btn" onclick="login()">CONNECT</button>
+        <div class="empty-state">
+          <p>Demo: Enter any key starting with "EAV-"</p>
+        </div>
+      </div>
+
+      <!-- Main Dashboard (hidden initially) -->
+      <div id="dashboard" style="display: none;">
+        <div class="logout-banner" onclick="logout()">
+          ⚠️ DEMO MODE - Tap to reload license
+        </div>
+        
+        <div class="header">
+          📱 TRADING ROBOT
+          <div style="font-size: 12px; font-weight: normal; margin-top: 5px;">
+            User: <span id="username">trader123</span>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <span>● Connected</span>
+          <span id="current-time">12:00:00</span>
+        </div>
+
+        <div class="section">
+          <div class="section-title">⚡ ACTIVE SIGNALS</div>
+          <div id="active-signals">
+            <div class="signal-card">
+              <div class="signal-text">EURUSD BUY</div>
+              <div class="signal-details">TP: 1.0850 | SL: 1.0800 | Lot: 0.5</div>
+              <div class="signal-time">Just now</div>
+            </div>
+            <div class="signal-card">
+              <div class="signal-text">XAUUSD SELL</div>
+              <div class="signal-details">TP: 2350 | SL: 2400 | Lot: 0.1</div>
+              <div class="signal-time">2 min ago</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">💰 RECENT TRADES</div>
+          <div id="recent-trades">
+            <div class="signal-card">
+              <div class="trade-text">GBPUSD BUY</div>
+              <div class="trade-profit profit-positive">+$45.20</div>
+              <div class="trade-time">Closed: 14:25:10</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 80px;"></div> <!-- Spacer for nav -->
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav-tabs" id="nav-tabs" style="display: none;">
+        <div class="nav-tab active">⚡ Signals</div>
+        <div class="nav-tab">📊 Stats</div>
+        <div class="nav-tab">⚙️ Settings</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Clock update
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('current-time').textContent = 
+        now.toTimeString().split(' ')[0];
+    }, 1000);
+
+    // Login simulation
+    function login() {
+      const key = document.getElementById('license-key').value;
+      if (key && key.startsWith('EAV-')) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('nav-tabs').style.display = 'flex';
+        document.getElementById('username').textContent = key.substring(4, 10);
+        loadMoreSignals();
+      } else {
+        alert('Please enter a valid license key (starts with EAV-)');
+      }
+    }
+
+    function logout() {
+      document.getElementById('login-screen').style.display = 'block';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('nav-tabs').style.display = 'none';
+      document.getElementById('license-key').value = '';
+    }
+
+    function loadMoreSignals() {
+      // Simulate dynamic loading
+      const signals = document.getElementById('active-signals');
+      setTimeout(() => {
+        const newSignal = document.createElement('div');
+        newSignal.className = 'signal-card';
+        newSignal.innerHTML = `
+          <div class="signal-text">NAS100 SELL</div>
+          <div class="signal-details">TP: 18200 | SL: 18500 | Lot: 1.0</div>
+          <div class="signal-time">Just now</div>
+        `;
+        signals.appendChild(newSignal);
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
